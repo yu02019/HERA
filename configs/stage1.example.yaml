@@ -1,0 +1,49 @@
+
+stage: 1
+device: auto
+model:
+  image_size: 224
+  patch_size: 16
+  vocab_size: 64010
+  visual_vocab_size: 8192 # must equal the actual visual tokenizer vocabulary
+  max_text_length: 256
+  hidden_size: 1024
+  depth: 24
+  num_heads: 16
+  intermediate_size: 4096
+  gradient_checkpointing: true
+  drop_path_rate: 0.1
+tokenizer:
+  kind: sentencepiece
+  model_path: /path/to/medical_sentencepiece.model
+  max_length: 256
+  cls_id: 0  # illustrative only: verify the actual CLS piece and ID
+  pad_id: 1  # illustrative only: verify the actual piece and ID
+  mask_id: 2  # illustrative only: verify the actual piece and ID
+  eos_id: 3  # illustrative only: verify the actual piece and ID
+data:
+  manifest: /path/to/stage1.jsonl
+  mean: [0.5, 0.5, 0.5]
+  std: [0.5, 0.5, 0.5]
+stage1:
+  image_mask_ratio: 0.4
+  text_mask_ratio: 0.15
+  image_loss_weight: 1.0
+  text_loss_weight: 1.0
+training:
+  steps: 100000 # example only; select based on corpus and training budget
+  batch_size: 8 # per domain, per rank and per microbatch
+  gradient_accumulation: 1
+  num_workers: 4
+  seed: 42
+  lr: 0.0001
+  min_lr: 0.000001
+  warmup_steps: 1000
+  weight_decay: 0.04
+  weight_decay_end: 0.4
+  grad_clip: 3.0
+  amp: true
+  log_every: 10
+  save_every: 1000
+  keep_step_checkpoints: false
+  output_dir: runs/stage1

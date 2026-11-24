@@ -1,0 +1,18 @@
+# Core running and data loading
+torch>=2.0
+numpy>=1.23
+Pillow>=9.0
+PyYAML>=6.0
+sentencepiece>=0.1.99
+
+# Teacher adapters: timm models (e.g. UNI and GPFM).
+# torchvision must be compatible with the installed PyTorch version.
+timm
+torchvision
+
+huggingface-hub
+safetensors
+
+transformers
+einops
+accelerate
